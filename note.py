@@ -46,6 +46,41 @@ def list_notes():
         print(f"{note['id']}. {note['title']} ({note['created_at']})")
 
 
+def edit_note():
+    note_id = int(
+        input("Введите ID заметки, которую хотите отредактировать: "))
+    note_to_edit = find_note_by_id(note_id)
+    if note_to_edit:
+        print(f"Редактирование заметки ID {note_id}:")
+        title = input("Введите новый заголовок заметки: ")
+        body = input("Введите новое тело заметки: ")
+        note_to_edit["title"] = title
+        note_to_edit["body"] = body
+        note_to_edit["last_modified"] = datetime.datetime.now().isoformat()
+        save_notes(notes)
+        print("Заметка успешно отредактирована.")
+    else:
+        print(f"Заметка с ID {note_id} не найдена.")
+
+
+def find_note_by_id(note_id):
+    for note in notes:
+        if note["id"] == note_id:
+            return note
+    return None
+
+
+def delete_note():
+    note_id = int(input("Введите ID заметки, которую хотите удалить: "))
+    note_to_delete = find_note_by_id(note_id)
+    if note_to_delete:
+        notes.remove(note_to_delete)
+        save_notes(notes)
+        print("Заметка успешно удалена.")
+    else:
+        print(f"Заметка с ID {note_id} не найдена.")
+
+
 def main():
     global notes
     notes = load_notes()
@@ -65,6 +100,10 @@ def main():
             add_note()
         elif command == "list":
             list_notes()
+        elif command == "edit":
+            edit_note()
+        elif command == "delete":
+            delete_note()
         elif command == "exit":
             print("Выход из программы.")
             break
