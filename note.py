@@ -37,6 +37,15 @@ def add_note():
     print("Заметка успешно сохранена.")
 
 
+def list_notes():
+    if not notes:
+        print("Список заметок пуст.")
+        return
+    print("Список заметок:")
+    for note in notes:
+        print(f"{note['id']}. {note['title']} ({note['created_at']})")
+
+
 def main():
     global notes
     notes = load_notes()
@@ -54,6 +63,8 @@ def main():
 
         if command == "add":
             add_note()
+        elif command == "list":
+            list_notes()
         elif command == "exit":
             print("Выход из программы.")
             break
