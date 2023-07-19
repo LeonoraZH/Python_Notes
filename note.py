@@ -81,6 +81,26 @@ def delete_note():
         print(f"Заметка с ID {note_id} не найдена.")
 
 
+def filter_notes_by_date():
+    date_str = input(
+        "Введите дату для фильтрации заметок (в формате ГГГГ-ММ-ДД): ")
+    try:
+        filter_date = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+    except ValueError:
+        print("Некорректный формат даты. Введите дату в формате ГГГГ-ММ-ДД.")
+        return
+
+    filtered_notes = [
+        note for note in notes if note["created_at"].startswith(date_str)]
+    if not filtered_notes:
+        print(f"Заметок, созданных {date_str}, не найдено.")
+        return
+
+    print(f"Список заметок, созданных {date_str}:")
+    for note in filtered_notes:
+        print(f"{note['id']}. {note['title']} ({note['created_at']})")
+
+
 def main():
     global notes
     notes = load_notes()
@@ -104,6 +124,8 @@ def main():
             edit_note()
         elif command == "delete":
             delete_note()
+        elif command == "filter":
+            filter_notes_by_date()
         elif command == "exit":
             print("Выход из программы.")
             break
